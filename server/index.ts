@@ -16,6 +16,7 @@ import agentRoutes from './routes/agents.js';
 import settingsRoutes from './routes/settings.js';
 import validatedQueriesRoutes from './routes/validatedQueries.js';
 import dashboardChatRoutes from './routes/dashboardChat.js';
+import dashboardChatRoutes from './routes/dashboardChat.js';
 import { initializeDatabase } from './database/init.js';
 import { closeDatabase } from './database/init.js';
 import { authenticateToken } from './middleware/auth.js';
@@ -73,6 +74,7 @@ app.use('/api/connectors', authenticateToken, connectorRoutes);
 app.use('/api/agents', authenticateToken, agentRoutes);
 app.use('/api/settings', authenticateToken, settingsRoutes);
 app.use('/api/validated-queries', authenticateToken, validatedQueriesRoutes);
+app.use('/api/dashboard-chat', authenticateToken, dashboardChatRoutes);
 app.use('/api/dashboard-chat', authenticateToken, dashboardChatRoutes);
 
 // Serve charts directory for all environments
