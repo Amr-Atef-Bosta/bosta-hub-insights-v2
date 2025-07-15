@@ -138,6 +138,17 @@ export class ValidatedQueriesService {
       headers: this.getAuthHeaders(),
     });
   }
+
+  // Get current dashboard context including filters and cached data
+  getCurrentDashboardContext(filters: FilterParams, requestManager: any): {
+    filters: FilterParams;
+    cachedData: Record<string, QueryResult>;
+  } {
+    return {
+      filters,
+      cachedData: requestManager.getAllCachedData()
+    };
+  }
 }
 
 // Chat service for QueryAnswerAgent
@@ -176,4 +187,4 @@ export class ValidatedChatService {
 }
 
 export const validatedQueriesService = new ValidatedQueriesService();
-export const validatedChatService = new ValidatedChatService(); 
+export const validatedChatService = new ValidatedChatService();
