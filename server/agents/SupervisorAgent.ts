@@ -42,6 +42,14 @@ export class SupervisorAgent {
 
   async processMessage(message: string, context: MessageContext): Promise<AgentResponse> {
     try {
+      // Check if this is a dashboard-specific request
+      if (context.dashboardContext) {
+        logger.info('SupervisorAgent: Routing to DashboardAgent for dashboard context');
+        const { DashboardAgent } = await import('./DashboardAgent.js');
+        const dashboardAgent = new DashboardAgent();
+        return await dashboardAgent.processMessage(message, context);
+      }
+
       // Determine which agent should handle this request
       const routingDecision = await this.routeMessage(message, context);
       
