@@ -1,0 +1,1 @@
+# bosta-hub-insights-v2
