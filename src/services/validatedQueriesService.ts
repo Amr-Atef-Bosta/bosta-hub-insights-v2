@@ -149,6 +149,42 @@ export class ValidatedQueriesService {
       cachedData: requestManager.getAllCachedData()
     };
   }
+
+  // Get cached query results from GlobalRequestManager
+  getCachedResults(requestManager: any): Record<string, QueryResult> {
+    if (requestManager && typeof requestManager.getAllCachedData === 'function') {
+      return requestManager.getAllCachedData();
+    }
+    return {};
+  }
+
+  // Build dashboard context for chat
+  buildDashboardContext(filters: FilterParams, cachedData: Record<string, QueryResult>): {
+    filters: FilterParams;
+    cachedData: Record<string, any>;
+  } {
+    // Transform cached data to match expected format
+    const transformedCachedData: Record<string, any> = {};
+    
+    Object.entries(cachedData).forEach(([key, result]) => {
+      // Extract query ID from cache key (format: "qid:filters_hash")
+      const queryId = key.split(':')[0];
+      
+      transformedCachedData[queryId] = {
+        data: result.data || [],
+        metadata: {
+          query_name: result.metadata?.query_name || queryId,
+          chart_hint: result.metadata?.chart_hint || 'auto',
+          cached: result.metadata?.cached || true
+        }
+      };
+    });
+
+    return {
+      filters,
+      cachedData: transformedCachedData
+    };
+  }
 }
 
 // Chat service for QueryAnswerAgent
