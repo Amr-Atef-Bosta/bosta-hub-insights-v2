@@ -1,6 +1,8 @@
 import React, { useState, useEffect, createContext, useContext, useCallback, useMemo, useRef } from 'react';
 import { ValidatedFilterBar } from '../components/ValidatedFilterBar';
 import { ValidatedWidget } from '../components/ValidatedWidget';
+import { DashboardFloatingChat } from '../components/DashboardFloatingChat';
+import { DashboardChatButton } from '../components/DashboardChatButton';
 import { ErrorBoundary } from '../components/ErrorBoundary';
 import { FilterParams, QueryResult, validatedQueriesService } from '../services/validatedQueriesService';
 
@@ -194,6 +196,7 @@ const DashboardDataProvider: React.FC<{ children: React.ReactNode; filters: Filt
 
 const DashboardPage: React.FC = () => {
   const [filters, setFilters] = useState<FilterParams>({});
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   // Memoize today-only filters to prevent unnecessary re-renders
   const getTodayOnlyFilters = useMemo(() => {
@@ -338,6 +341,19 @@ const DashboardPage: React.FC = () => {
           </ErrorBoundary>
         </div>
       </div>
+
+      {/* Dashboard Floating Chat */}
+      <DashboardChatButton
+        isOpen={isChatOpen}
+        onClick={() => setIsChatOpen(!isChatOpen)}
+      />
+      
+      <DashboardFloatingChat
+        isOpen={isChatOpen}
+        onClose={() => setIsChatOpen(false)}
+        filters={filters}
+        cachedData={useDashboardData().data}
+      />
     </DashboardDataProvider>
   );
 };
