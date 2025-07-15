@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: insight-hub-service
+  namespace: bosta-insight-hub
+  labels:
+    app: insight-hub
+spec:
+  selector:
+    app: insight-hub
+  ports:
+  - name: http
+    port: 80
+    targetPort: 3000
+    protocol: TCP
+  type: ClusterIP

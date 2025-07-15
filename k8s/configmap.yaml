@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: insight-hub-config
+  namespace: bosta-insight-hub
+data:
+  NODE_ENV: "production"
+  PORT: "3000"
+  MYSQL_HOST: "mysql-service"
+  MYSQL_PORT: "3306"
+  MYSQL_DATABASE: "bosta_insight_hub"
+  DELIVERIES_MYSQL_HOST: "mysql-service"
+  DELIVERIES_MYSQL_PORT: "3306"
+  DELIVERIES_MYSQL_DATABASE: "bosta-data"
+  REDIS_HOSTNAME: "redis-service"
+  REDIS_PORT: "6379"

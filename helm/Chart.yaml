@@ -1,0 +1,17 @@
+apiVersion: v2
+name: bosta-insight-hub
+description: A Helm chart for Bosta Insight Hub v2
+type: application
+version: 2.0.0
+appVersion: "2.0.0"
+keywords:
+  - analytics
+  - ai
+  - logistics
+  - bosta
+home: https://github.com/bosta/insight-hub
+sources:
+  - https://github.com/bosta/insight-hub
+maintainers:
+  - name: Bosta Engineering
+    email: engineering@bosta.co

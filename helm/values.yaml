@@ -1,0 +1,99 @@
+# Default values for bosta-insight-hub
+replicaCount: 2
+
+image:
+  repository: bosta/insight-hub
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  fsGroup: 1001
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 1001
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  hosts:
+    - host: insighthub.bosta.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: insight-hub-tls
+      hosts:
+        - insighthub.bosta.local
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 1Gi
+  requests:
+    cpu: 250m
+    memory: 512Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# MySQL configuration
+mysql:
+  enabled: true
+  auth:
+    rootPassword: "changeme"
+    database: "bosta_insight_hub"
+  primary:
+    persistence:
+      enabled: true
+      size: 10Gi
+
+# Redis configuration
+redis:
+  enabled: true
+  auth:
+    enabled: false
+  master:
+    persistence:
+      enabled: false
+
+# Application configuration
+config:
+  nodeEnv: production
+  port: 3000
+
+# Secrets (set these in production)
+secrets:
+  openaiApiKey: ""
+  jwtSecret: ""
+  mysqlPassword: ""

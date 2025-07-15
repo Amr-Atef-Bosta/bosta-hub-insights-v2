@@ -1,0 +1,36 @@
+# Development Dockerfile - Fast builds without canvas
+FROM node:18-alpine AS development
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies without canvas (much faster)
+RUN npm install --prefer-offline --no-audit --ignore-scripts
+
+# Copy configuration files
+COPY tsconfig*.json ./
+COPY vite.config.ts ./
+COPY postcss.config.js ./
+COPY tailwind.config.js ./
+COPY server/tsconfig.json ./server/
+
+# Copy source code
+COPY src ./src
+COPY server ./server
+COPY public ./public
+COPY index.html ./
+
+# Build application
+RUN npm run build && npm run build:backend
+
+# Create charts directory
+RUN mkdir -p /app/public/charts
+
+# Expose port
+EXPOSE 3000
+
+# Start application
+CMD ["node", "dist/server/index.js"] 

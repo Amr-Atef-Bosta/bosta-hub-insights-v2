@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: bosta-insight-hub
+  labels:
+    name: bosta-insight-hub
+    app: insight-hub
